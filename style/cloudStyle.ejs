@@ -1,0 +1,28 @@
+<style>
+
+body {
+    background-color: rgba(0, 0, 0, 0.116);
+}
+
+.files {
+    display: grid;
+}
+
+@media only screen and (max-width: 800px) {
+  .files {
+    grid-template-columns: auto auto;
+  }
+}
+
+@media only screen and (min-width: 801px) and (max-width: 1000px) {
+  .files {
+    grid-template-columns: auto auto auto;
+  }
+}
+
+@media only screen and (min-width: 1001px){
+  .files {
+    grid-template-columns: auto auto auto auto auto;
+  }
+}
+</style>

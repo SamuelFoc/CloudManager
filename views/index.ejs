@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <%- include("../style/cloudStyle.ejs") %> 
+    <title>CLOUD</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand text-primary" href="#">HomeAssist</a>
+        </div>
+    </nav>
+
+    <div class="container d-flex flex-column">
+        <div class="alert alert-<%= status %>  alert-dismissible fade show text-center m-3" role="alert">
+            <strong><%= message %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <form class="m-3 d-flex" method="post" action="/" enctype="multipart/form-data">
+            <input class="form-control text-primary m-2" type="file" name="file" id="formFile">
+            <input class="btn btn-primary h-50 m-2" type="submit" value="Upload">
+        </form>
+        <button class="btn btn-primary mb-3 mx-4" style="max-width: 10rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Create folder
+        </button>
+        <div class="collapse container mx-3 w-50 shadow-sm" id="collapseExample">
+                <form class="input-group mb-3" action="/create<%= url %>" method="post">
+                    <input class="btn btn-outline-success" type="submit" name="submit" value="Create" id="button-addon1">
+                    <input type="text" name="name" class="form-control" placeholder="Folder name" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                </form> 
+        </div>
+    </div>
+    
+    
+    <div id="mainBox" class="container files ">
+        <% if (data.length > 0) {%> 
+            <% let i = 0 %> 
+            <% data.forEach(file => { %>
+            <div class="card text-center shadow-sm p-2 m-2" style="width: 12rem; min-height: 8rem;">
+                
+                <% if (extensions[i] === "folder"){ %> 
+                    <button class="btn btn-secondary mb-3 mx-1" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+                    </button>
+                    <div class="collapse container mx-3 w-50 shadow-sm" id="collapseExample1<%= i %>">
+                        <a href="/delete/folder<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger"></a>
+                    </div>
+                    <a href="<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
+                    <div class="card-body p-1">
+                        <p class="card-text"><%= file %></p>
+                    </div>
+                
+                <% } else {%>
+                    <button class="btn btn-secondary mb-3 mx-1" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+                    </button>
+                    <div class="collapse container mx-3 w-50 shadow-sm" id="collapseExample1<%= i %>">
+                        <a href="/delete/file<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger"></a>
+                    </div>
+                    
+                    
+                    <a href="/view/<%= file %> " class="fas fa-<%= extensions[i] %>  display-3"></a>
+                    <div class="card-body p-1">
+                        <p class="card-text"><%= file %></p>
+                    </div>
+                    <a class="fas fa-download" href="/download/<%= file %>"></a>
+                
+                <% } %>  
+            </div>
+            <% i++ }) %> 
+        <% } %>
+    </div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
+
+</html>
