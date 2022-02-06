@@ -1,7 +1,9 @@
 const express           = require("express");
+const session           = require("express-session");
 const upload            = require("express-fileupload");
 const path              = require("path");
 const fs                = require("fs");
+const MongoStore        = require("connect-mongo");
 
 const filer             = require("./fileController");
 
@@ -15,17 +17,39 @@ app.use(upload());
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname, './views'));
 
+app.use(
+    session({
+        secret: "some secret",
+        resave: false,
+        saveUninitialized: true,
+        store: MongoStore.create({ mongoUrl: "mongodb://localhost:27017/sessions" }),
+        cookie: {
+            maxAge: 1000*3600
+        }
+    })
+);
 
 app.get("/", (req, res) => {
+    if (req.session.viewCount){
+        req.session.viewCount++;
+    } else {
+        req.session.viewCount = 1;
+    }
     res.redirect("/CLOUD");
 });
 
 app.get("/CLOUD", (req, res) => {
     data = fs.readdirSync("./CLOUD");
     extensions = filer.readExtensions(data);
+    if(req.session.viewCount > 1){
+        var message = new Date();
+        var message = message.toDateString();
+    } else {
+        message = "Welcome to your cloud storage";
+    }
     res.render("index", 
         {
-            message: "Welcome to your cloud storage", 
+            message: message, 
             data: data, 
             status: "primary",
             extensions: extensions,
@@ -144,4 +168,4 @@ app.get("/delete/folder/:url(*)", (req, res) => {
     res.redirect("back");
 });
 
-app.listen(26000);
+app.listen(3000);
