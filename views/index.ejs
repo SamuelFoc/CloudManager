@@ -21,7 +21,7 @@
             <strong><%= message %></strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
-        <form class="m-3 d-flex" method="post" action="/" enctype="multipart/form-data">
+        <form class="m-3 d-flex" method="post" action="/upload<%= url %> " enctype="multipart/form-data">
             <input class="form-control text-primary m-2" type="file" name="file" id="formFile">
             <input class="btn btn-primary h-50 m-2" type="submit" value="Upload">
         </form>
@@ -55,10 +55,11 @@
                     </div>
                 
                 <% } else {%>
-                    <button class="btn btn-secondary mb-3 mx-1" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+                    <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+                    <i class="fas fa-ellipsis-v"></i>
                     </button>
-                    <div class="collapse container mx-3 w-50 shadow-sm" id="collapseExample1<%= i %>">
-                        <a href="/delete/file<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger"></a>
+                    <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
+                        <a href="/delete/file<%= url %>/<%= file %> " class="fas fa-trash text-danger m-2"></a>
                     </div>
                     
                     
