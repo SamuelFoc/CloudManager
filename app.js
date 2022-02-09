@@ -24,7 +24,7 @@ app.use(
         saveUninitialized: true,
         store: MongoStore.create({ mongoUrl: "mongodb://localhost:27017/sessions" }),
         cookie: {
-            maxAge: 1000*3600
+            maxAge: 20
         }
     })
 );
@@ -37,6 +37,8 @@ app.get("/", (req, res) => {
     }
     res.redirect("/CLOUD");
 });
+
+app.get("/upload/CLOUD", (req, res) => res.redirect("/"))
 
 app.get("/CLOUD", (req, res) => {
     data = fs.readdirSync("./CLOUD");
@@ -60,7 +62,6 @@ app.get("/CLOUD", (req, res) => {
 app.get("/download/:file", (req, res) => {
     var file = req.params.file;
     var fileLocation = path.join('./CLOUD',file);
-    console.log(fileLocation);
     res.download(fileLocation, file);
 });
 
@@ -92,39 +93,42 @@ app.get("/CLOUD/:folder(*)", (req, res) => {
             extensions: extensions,
             url: req.originalUrl
         })
-    console.log(req.originalUrl)
 })
 
-app.post("/", (req, res) => {
+app.post("/upload/:url(*)", (req, res) => {
     if(req.files){
         var file = req.files.file
         var fileName = file.name
         
-        data = fs.readdirSync("./CLOUD");
-        extensions = filer.readExtensions(data);
-        
-        if(data.filter(file => file === fileName)){
-            res.render("index",
-            {
-                message: "File with this name already exists", 
+        let data = fs.readdirSync("./CLOUD");
+
+        let extensions = filer.readExtensions(data);
+        let match = data.filter((file) => {
+            return file === fileName
+        });
+        console.log(match)
+        console.log("running")
+        if (match.length !== 0){
+            console.log("matched")
+            res.render("index", {
+                message: "File already exists", 
                 data: data, 
                 status: "warning",
-                extensions: extensions
+                extensions: extensions,
+                url: req.originalUrl
             })
         } else {
-            file.mv("./CLOUD/" + fileName, (err) => {
-                if(err){
-                    res.send(err)
-                }
-                else{
-                    res.render("index",
-                    {
-                        message: "File uploaded successfully", 
-                        data: data, 
-                        status: "success",
-                        extensions: extensions
-                    })
-                }
+            filer.uploadFileToDirectory(file, "./"+`${req.params.url}` + "/");
+            console.log("File: " + `${fileName}` + " was saved to: " + "./"+`${req.params.url}` + "/")
+
+            data = fs.readdirSync("./CLOUD/");  
+ 
+            res.render("index", {
+                message: "File uploaded successfully", 
+                data: data, 
+                status: "success",
+                extensions: extensions,
+                url: req.params.url
             })
         }
     }

@@ -1,3 +1,6 @@
+const fs                = require("fs");
+
+
 const readExtensions = function(data){
     var extensions = [];
     data.forEach(fileName => {
@@ -28,8 +31,20 @@ const readExtensions = function(data){
     return extensions;
 }
 
+const findMatch = function(data, fileName){
+    data.filter((file) => {
+        return file === fileName
+    });
+}
 
+const uploadFileToDirectory = function(file, basePath){
+    var fileName = file.name;
+
+    file.mv(`${basePath}` + fileName)
+}
 
 module.exports = {
-    readExtensions
+    readExtensions,
+    findMatch,
+    uploadFileToDirectory
 }
