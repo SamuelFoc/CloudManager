@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="collapse col-12 p-2 signUser" id="passConf">
+            <h5>Settings</h5>
+            <div class="col-12">
+                <h6 class="p-2">
+                    <button class="ms-auto border-0 fs-4 mx-2" style="max-width: 1rem;" type="button" data-bs-toggle="collapse" data-bs-target="#password" aria-expanded="false" aria-controls="password">
+                    <i class="fas fa-key fs-6"></i>
+                    </button>
+                    Change password
+                </h6>
+                <form id="password" class="collapse input-group" action="/heyCloud/changeMyPassword" method="post">
+                    <input class="form-control w-50 m-1" type="text" placeholder="old password" name="oldPassword">
+                    <input class="form-control w-50 m-1" type="text" placeholder="new password" name="newPassword">
+                    <input class="btn btn-success m-1" type="submit" value="Change">
+                </form>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>

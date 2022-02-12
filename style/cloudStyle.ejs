@@ -1,12 +1,87 @@
 <style>
 
 body {
-    background-color: rgba(0, 0, 0, 0.116);
+    background-color: rgba(0, 0, 0, 0.034);
+}
+
+.footerText {
+  width: 100vw;
+  position: relative;
+  bottom: 0;
+  font-size: 10px;
+}
+@media only screen and (min-width: 500px) {
+  .footerText {
+  width: 100vw;
+  position: relative;
+  bottom: 0;
+  font-size: 12px;
+}
+}
+
+
+
+.userPath {
+  background-color: rgb(34, 34, 34);
+  padding: 5px;
+  border-radius: 0px 0px 5px 5px;
+}
+
+.userPath a {
+  text-decoration: none;
+}
+
+.logout {
+  font-size: 2rem;
+  margin-right: 0;
+}
+
+.logout:hover {
+  transform: scale(1.2, 1.2);
+  color: red;
+}
+
+.fab {
+  color: #353535;
+}
+
+.watch {
+  background-color: rgba(0, 0, 0, 0.24);
+  border-radius: 0px 0px 5px 5px;
+  padding: 2rem;
+}
+
+nav .fas {
+  color: aliceblue;
 }
 
 .files {
     display: grid;
 }
+
+@media only screen and (min-width: 500px) {
+  .dragDrop {
+  border: 1px solid #676869;
+  border-radius: 5px;
+  background: #f1f1f1;
+  outline: 2px dashed #3a68ca;
+  outline-offset: -10px;
+  padding: 10vh 20vw;
+  text-align: center;
+  max-height: 100px;
+}
+}
+
+.dragContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+}
+
+.dragDrop:hover {
+  background: #ddd;
+}   
 
 button {
   background-color: rgba(255, 0, 0, 0);

@@ -1,0 +1,70 @@
+<div class="container collapse mb-3 mt-1" id="timeDiv">
+    <div class="row d-flex justify-content-start">
+        <div class="col-12 d-flex flex-column justify-content-center watch">
+            <div class="row">
+                <h3 class="fs-1 d-flex justify-content-center" id="clock"></h3>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <input class="form-control" style="max-height: 2rem; max-width: 14rem;" onchange="setAlarmTime(this.value)" name="alarmTime" type="datetime-local">
+            </div>
+            <div class="row d-flex justify-content-center m-1">
+                <button style="max-width: 8rem;" onclick="setAlarm()" class="btn btn-primary m-1 w-100">Set alarm</button>
+                <button style="max-width: 8rem;" onclick="clearAlarm()" class="btn btn-danger m-1 w-100">Clear alarm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById('clock');
+    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+    audio.loop = true;
+    let alarmTime = null;
+    let alarmTimeout = null;
+
+    function updateTime() {
+        const date = new Date();
+
+        const hour = formatTime(date.getHours());
+        const minutes = formatTime(date.getMinutes());
+        const seconds = formatTime(date.getSeconds());
+
+
+
+        display.innerText=`${hour} : ${minutes} : ${seconds}`
+    }
+
+    function formatTime(time) {
+        if ( time < 10 ) {
+            return '0' + time;
+        }
+        return time;
+    }
+
+    function setAlarmTime(value) {
+        alarmTime = value;
+    }
+
+    function setAlarm() {
+        if(alarmTime) {
+            const current = new Date();
+            const timeToAlarm = new Date(alarmTime);
+
+            if (timeToAlarm > current) {
+                const timeout = timeToAlarm.getTime() - current.getTime();
+                alarmTimeout = setTimeout(() => audio.play(), timeout);
+                alert('Alarm set');
+            }
+        }
+    }
+
+    function clearAlarm() {
+        audio.pause();
+        if (alarmTimeout) {
+            clearTimeout(alarmTimeout);
+            alert('Alarm cleared');
+        }
+    }
+
+    setInterval(updateTime, 1000);
+</script>

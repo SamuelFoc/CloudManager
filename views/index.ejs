@@ -10,44 +10,113 @@
     <title>CLOUD</title>
 </head>
 <body>
+<main class="mb-5" role="main">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand text-primary" href="#">HomeAssist</a>
+          <div class="col-10 col-md-5">
+            <a class="navbar-brand text-primary fs-3" href="#">HomeAssist</a>
+            <% if(isAdmin){ %> 
+                <a class="text-light fs-4 mx-2" href="/admin"><i class="fas fa-user-shield"></i></a>
+            <% } %> 
+            <button class="ms-auto p-2 border-0 fs-4 mx-2" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#timeDiv" aria-expanded="false" aria-controls="timeDiv">
+            <i class="fas fa-clock"></i>
+            </button>
+            <button class="ms-auto p-2 border-0 fs-4 mx-2" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#passConf" aria-expanded="false" aria-controls="passConf">
+                <i class="fas fa-cogs"></i>
+                </button>
+          </div>
+          <div class="col-1">
+            <a href="/logOut"><i class="logout fas fa-sign-out-alt"></i></a>
+          </div>
         </div>
     </nav>
+    <div class="container-fluid">
+        <div class="row d-flex">
+            <div class="col-12 col-md-6 d-flex justify-content-end">
+                <%- include("./partials/timer") %> 
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-start">
+                <%- include("./partials/passConfig") %> 
+            </div>
+        </div>
+    </div>
+    
 
-    <div class="container d-flex flex-column">
-        <div class="alert alert-<%= status %>  alert-dismissible fade show text-center m-3" role="alert">
-            <strong><%= message %></strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <form class="m-3 d-flex" method="post" action="/upload<%= url %> " enctype="multipart/form-data">
-            <input class="form-control text-primary m-2" type="file" name="file" id="formFile">
-            <input class="btn btn-primary h-50 m-2" type="submit" value="Upload">
-        </form>
+    <div class="container-fluid container-sm  d-flex flex-column">
+        <% if(message){ %> 
+            <div class="alert alert-<%= status %>  alert-dismissible fade show text-center m-3" role="alert">
+                <strong><%= message %></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %> 
+
+        <div class="container-fluid container-md">
+            <div class="row">
+                <div id="dragArea" class="col-12 d-flex justify-content-center">
+                    <form class="m-3 mx-5 d-flex flex-column" method="post" action="/heyCLOUD/upload<%= url %> " enctype="multipart/form-data">
+                        <div class="dragContainer">
+                            <input class="form-control dragDrop" type="file" name="file" id="formFile">
+                            <input class="btn btn-primary p-1 m-2 w-50" type="submit" value="Upload">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <nav class="userPath shadow" aria-label="breadcrumb">
+                <ol class="breadcrumb mx-2 mb-0 fs-4">
+                    <% for(let i = 0; i < breadCrumb.length; i++){ %>
+                        <% if(i === (breadCrumb.length - 1) && i > 1){ %>  
+                            <li class="breadcrumb-item active" aria-current="page"><%= breadCrumb[i]%></li>
+                        <%} else if(i === 0){ %>
+                            <li class="breadcrumb-item"><i class="fas fa-database"></i></li>
+                        <%} else if(i === 1){ %>
+                            <li class="breadcrumb-item"><a href="<%= references[i] %> ">My cloud</a></li>
+                        <% } else { %>
+                            <li class="breadcrumb-item"><a href="<%= references[i] %> "><%= breadCrumb[i]%></a></li>
+                        <% } %>  
+                    <% } %>
+                </ol>
+              </nav>
+
+            <hr style="color: rgb(31, 31, 31);">
+        </div>
+
         <button class="btn btn-primary mb-3 mx-4" style="max-width: 10rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Create folder
         </button>
-        <div class="collapse container mx-3 w-50 shadow-sm" id="collapseExample">
-                <form class="input-group mb-3" action="/create<%= url %>" method="post">
-                    <input class="btn btn-outline-success" type="submit" name="submit" value="Create" id="button-addon1">
-                    <input type="text" name="name" class="form-control" placeholder="Folder name" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        <div class="collapse container mx-3 w-50" style="min-width: 300px;" id="collapseExample">
+                <form class="input-group mb-3" action="/heyCLOUD/create<%= url %>" method="post">
+                    <input class="btn btn-outline-success shadow-sm" type="submit" name="submit" value="Create" id="button-addon1">
+                    <input type="text" name="name" class="form-control shadow-sm" placeholder="Folder name" aria-label="Example text with button addon" aria-describedby="button-addon1">
                 </form> 
         </div>
     </div>
     
     
-    <div id="mainBox" class="container files ">
+    
+    <div id="mainBox" class="container-fluid container-md files mb-5">
         <% if (data.length > 0) {%> 
             <% let i = 0 %> 
             <% data.forEach(file => { %>
-            <div class="card text-center shadow-sm p-2 m-2" style="width: 12rem; min-height: 8rem;">
+            <div class="card text-center shadow-sm p-2 m-2 w-50">
                 
                 <% if (extensions[i] === "folder"){ %> 
-                    <button class="btn btn-secondary mb-3 mx-1" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
-                    </button>
-                    <div class="collapse container mx-3 w-50 shadow-sm" id="collapseExample1<%= i %>">
-                        <a href="/delete/folder<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger"></a>
+                    <div class="d-flex">
+                        <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
+                            <a href="/heyCLOUD/delete/folder<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger m-2"></a>
+                            <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRename<%= i %>" aria-expanded="false" aria-controls="collapseRename<%= i %>">
+                            <i class="fas fa-cog"></i>
+                            </button>
+                            <div class="collapse container" id="collapseRename<%= i %>">
+                                <form class="input-group mb-2" action="/heyCLOUD/rename/<%= file %><%= url %>" method="post">
+                                    <input class="btn btn-outline-success shadow-sm" type="submit" name="submit" value="Rename">
+                                    <input type="text" name="name" class="form-control shadow-sm" placeholder="New name">
+                                </form> 
+                        </div>
+                        </div>
+                        <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+                        <i class="fas fa-ellipsis-v"></i>
+                        </button>
                     </div>
                     <a href="<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
                     <div class="card-body p-1">
@@ -59,21 +128,39 @@
                     <i class="fas fa-ellipsis-v"></i>
                     </button>
                     <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
-                        <a href="/delete/file<%= url %>/<%= file %> " class="fas fa-trash text-danger m-2"></a>
+                        <a href="/heyCLOUD/delete/file<%= url %>/<%= file %> " class="fas fa-trash text-danger m-2"></a>
                     </div>
                     
                     
-                    <a href="/view/<%= file %> " class="fas fa-<%= extensions[i] %>  display-3"></a>
+                    <a href="/heyCLOUD/view/<%= file %><%= url %> " class="fas fa-<%= extensions[i] %>  display-3"></a>
                     <div class="card-body p-1">
                         <p class="card-text"><%= file %></p>
                     </div>
-                    <a class="fas fa-download" href="/download/<%= file %>"></a>
+                    <a class="fas fa-download" href="/heyCLOUD/download/<%= file %><%= url %> "></a>
                 
                 <% } %>  
             </div>
             <% i++ }) %> 
         <% } %>
     </div>
+</main>
+
+<footer class="footer mt-5 footerText" style="min-height: 8rem;">
+    <hr>
+    <div class="container-fluid container-md d-flex flex-column align-content-center">
+        <div class="col-12 text-center">
+            <span class="text-muted"><i class="far fa-registered"></i> This cloud was created by Samuel Šipikal. It should only be used by persons authorized by the author. Any unauthorized access may be subject to a financial penalty. Every file in this web app is stored physicaly on Raspberry Pi 4 server and managed by HomeAssist software.</span>
+        </div>
+        <strong class="text-center text-muted">
+            In case of any problem, you can contact the author at the following links...
+        </strong>
+        <div class="d-flex justify-content-center m-3 display-5">
+            <a href="https://github.com/SamuelFoc"><i class="fab fa-github mx-2"></i></a>
+            <a href="https://www.instagram.com/samo_sipikal/"><i class="fab fa-instagram mx-2"></i></a>
+            <a href="https://www.facebook.com/samo.sipikal"><i class="fab fa-facebook mx-2"></i></a>
+        </div>
+    </div>
+</footer>
 
 </body>
 
