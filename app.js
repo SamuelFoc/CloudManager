@@ -6,6 +6,7 @@ const upload            = require("express-fileupload");
 const path              = require("path");
 const MongoStore        = require("connect-mongo");
 const auth              = require("./security/secure-functions");
+const sign              = require("./controllers/signIn");
 
 //ROUTES REQUIRES
 const baseRoutes        = require("./routes/baseCloudRoutes");
@@ -42,7 +43,7 @@ app.use(
         saveUninitialized: true,
         store: MongoStore.create({ mongoUrl: "mongodb://localhost:27017/cloudAuth" }),
         cookie: {
-            maxAge: 1000*3600*24
+            maxAge: 3600*24
         }
     })
 );
@@ -67,6 +68,13 @@ app.get("/logOut", (req, res) => {
     console.log("User logged out");
     res.redirect("/signUp");
 });
+
+//This line is used just for the very
+//first start of the app
+app.post("/firstSignIn", (req, res) => {
+    sign.first_sign_in(req, res);
+})
+app.use(auth.isThereAdmin);
 
 //AskForPermission
 app.use("/ask", permissionRoutes);

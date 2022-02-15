@@ -24,6 +24,8 @@ const readExtensions = function(data){
             extensions[i] = "file-code";
         } else if (extensions[i] === "js"){
             extensions[i] = "file-js"
+        } else if (extensions[i] === "avi" || extensions[i] === "mp4" || extensions[i] === "mkv"){
+            extensions[i] = "film";
         } else {
             extensions[i] = "folder"
         }

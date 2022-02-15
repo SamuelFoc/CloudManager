@@ -7,6 +7,33 @@ const open_signIn = (req, res) => {
 	res.render("signIn", {code: "You dont have code"});
 }
 
+const first_sign_in = (req, res) => {
+	bcrypt.genSalt(10, function (err, salt) {
+		if (err) return next(err);
+		bcrypt.hash(`${req.body.password}`, salt, function (err, hash) {
+			if (err) return next(err);
+			
+			const newUser = new User({
+				email: req.body.email,
+                password: hash,
+				isAdmin: req.body.admin
+			});
+
+			console.log(`User named ${req.body.email} saved at ${new Date()}`);
+
+			newUser.save().then((user) => {
+				const dirName = user._id.toString()
+				if (!fs.existsSync("CLOUD")){
+					fs.mkdirSync("CLOUD");
+				}
+				fs.mkdirSync(`./CLOUD/${dirName}`);
+			})
+		});
+	});
+
+	res.redirect("signUp");
+}
+
 const sign_in = (req, res) => {
     const exists = User.exists({ email: `${req.body.email}` });
 	console.log(req.body)
@@ -75,5 +102,6 @@ const sign_in_randomly = (req, res) => {
 module.exports = {
     sign_in,
 	open_signIn,
-	sign_in_randomly
+	sign_in_randomly,
+	first_sign_in
 }

@@ -19,10 +19,22 @@ const open_admin = (req, res) => {
 
 const delete_user = (req, res) => {
     const id = req.params.id;
-    User.findOneAndDelete({_id: id}, (err, user) => {
-        console.log(`User ${user.email} deleted`);
-        res.redirect("back");
-    }) 
+    const dir = "./CLOUD/" + id;
+
+    fs.rmdir(dir, { recursive: true }, (err) => {
+        if (err) {
+            req.session.messageObj = {
+                message: `Sorry, there occured some problems deleting the file, please try it again.`,
+                status: "danger"
+            }
+            throw err;
+        } else {
+            User.findOneAndDelete({_id: id}, (err, user) => {
+                console.log(`User ${user.email} deleted`);
+                res.redirect("back");
+            }) 
+        }
+    })
 }
 
 const warn_user = (req, res) => {

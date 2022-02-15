@@ -1,5 +1,17 @@
 const User          = require("../models/user");
 
+function isThereAdmin(req, res, next){
+    User.findOne({ email: "samo.sipikal@gmail.com"}, (err, exists) => {
+        console.log(exists)
+        if(exists){
+            console.log("There already is Admin!")
+            next()
+        } else {
+            console.log("There is no Admin yet!")
+            res.render("signIn");
+        }
+    })
+}
 
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
@@ -41,5 +53,6 @@ function isAdmin(req, res, next){
 module.exports = {
     isLoggedIn,
     isLoggedOut,
-    isAdmin
+    isAdmin,
+    isThereAdmin
 }
