@@ -94,54 +94,10 @@
     
     
     
-    <div id="mainBox" class="container-fluid container-md files mb-5">
-        <% if (data.length > 0) {%> 
-            <% let i = 0 %> 
-            <% data.forEach(file => { %>
-            <div class="card text-center shadow-sm p-2 m-2 w-50">
-                
-                <% if (extensions[i] === "folder"){ %> 
-                    <div class="d-flex">
-                        <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
-                            <a href="/heyCLOUD/delete/folder<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger m-2"></a>
-                            <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRename<%= i %>" aria-expanded="false" aria-controls="collapseRename<%= i %>">
-                            <i class="fas fa-cog"></i>
-                            </button>
-                            <div class="collapse container" id="collapseRename<%= i %>">
-                                <form class="input-group mb-2" action="/heyCLOUD/rename/<%= file %><%= url %>" method="post">
-                                    <input class="btn btn-outline-success shadow-sm" type="submit" name="submit" value="Rename">
-                                    <input type="text" name="name" class="form-control shadow-sm" placeholder="New name">
-                                </form> 
-                        </div>
-                        </div>
-                        <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
-                        <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                    </div>
-                    <a href="<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
-                    <div class="card-body p-1">
-                        <p class="card-text"><%= file %></p>
-                    </div>
-                
-                <% } else {%>
-                    <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
-                    <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
-                        <a href="/heyCLOUD/delete/file<%= url %>/<%= file %> " class="fas fa-trash text-danger m-2"></a>
-                    </div>
-                    
-                    
-                    <a href="/heyCLOUD/view/<%= file %><%= url %> " class="fas fa-<%= extensions[i] %>  display-3"></a>
-                    <div class="card-body p-1">
-                        <p class="card-text"><%= file %></p>
-                    </div>
-                    <a class="fas fa-download" href="/heyCLOUD/download/<%= file %><%= url %> "></a>
-                
-                <% } %>  
-            </div>
-            <% i++ }) %> 
-        <% } %>
+    <div id="mainBox" class="container-fluid container-md mb-5">
+        <div class="row">
+            <%- include("./partials/filesBox") %> 
+        </div>
     </div>
 </main>
 
