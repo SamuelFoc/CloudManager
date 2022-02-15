@@ -63,8 +63,6 @@ const open_CLOUD = (req, res) => {
     }
 
     const newUrl = req.originalUrl + "/" + req.session.passport.user;
-    console.log(newUrl)
-
     
     User.find({_id: req.session.passport.user}, (err, user) => {
         isAdmin = user[0].isAdmin;

@@ -12,8 +12,42 @@ const download_file = (req, res) => {
 }
 
 const upload_file = (req, res) => {
-    if(req.files){
-        var file = req.files.file
+    const files = req.files.files;
+    let existingFiles = fs.readdirSync(`./${req.params.url}`);
+    var rejection = false;
+    
+    if(files.length){
+        for(let i = 0; i < files.length; i++){
+            var fileName = files[i].name
+
+            let match = existingFiles.filter((file) => {
+                return file === fileName
+            });
+    
+        if (match.length !== 0){
+            console.log("matched");
+            console.log(fileName);
+            req.session.messageObj = {
+                status: "warning",
+                message: `File named ${fileName}, aleready exists! Uploading stopped.`
+            }
+            rejection = true;
+            res.redirect(`back`)
+            break;
+        } else {
+            filer.uploadFileToDirectory(files[i], "./"+`${req.params.url}` + "/");
+            console.log("File: " + `${fileName}` + " was saved to: " + "./"+`${req.params.url}` + "/")
+            req.session.messageObj = {
+                message: "Files uploaded successfully.",
+                status: "success"
+            }
+        }
+        }
+        if(!rejection){
+            res.redirect(`/${req.params.url}`);
+        }
+    } else {
+        var file = req.files.files
         var fileName = file.name
         let data = fs.readdirSync(`./${req.params.url}`);
         let match = data.filter((file) => {
@@ -34,7 +68,7 @@ const upload_file = (req, res) => {
                 message: "File uploaded successfully.",
                 status: "success"
             }
-            res.redirect(`/${req.params.url}`)
+            res.redirect(`back`)
         }
     }
 };
@@ -133,6 +167,27 @@ const rename_folder = (req, res) => {
     res.redirect("back");
 }
 
+const rename_file = (req, res) => {
+    const url = req.params.url;
+    const newName = req.body.name;
+    const oldName = req.params.name;
+    const extension = oldName.split(".").slice(1)[0];
+
+    const currPath = url + "/" + oldName;
+    const newPath = url + "/" + newName + "." + extension;
+
+    console.log(currPath, newPath);
+    fs.rename(currPath, newPath, function(err) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log("Successfully renamed the directory.")
+        }
+      })
+
+    res.redirect("back");
+}
+
 const change_password = (req, res) => {
     const id = req.session.passport.user;
     const oldPass = req.body.oldPassword;
@@ -182,5 +237,6 @@ module.exports = {
     delete_folder,
     create_folder,
     change_password,
-    rename_folder
+    rename_folder,
+    rename_file
 }

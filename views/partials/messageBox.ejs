@@ -1,0 +1,8 @@
+<div class="container-fluid container-md">
+    <% if(message){ %> 
+        <div class="alert alert-<%= status %>  alert-dismissible fade show text-center m-3" role="alert">
+            <strong><%= message %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %> 
+</div>

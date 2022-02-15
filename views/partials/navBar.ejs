@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+      <div class="col-10 col-md-5">
+        <a class="navbar-brand text-primary fs-3" href="#">HomeAssist</a>
+        <% if(isAdmin){ %> 
+            <a class="text-light fs-4 mx-2" href="/admin"><i class="fas fa-user-shield"></i></a>
+        <% } %> 
+        <button class="ms-auto p-2 border-0 fs-4 mx-2" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#timeDiv" aria-expanded="false" aria-controls="timeDiv">
+        <i class="fas fa-clock"></i>
+        </button>
+        <button class="ms-auto p-2 border-0 fs-4 mx-2" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#passConf" aria-expanded="false" aria-controls="passConf">
+            <i class="fas fa-cogs"></i>
+            </button>
+      </div>
+      <div class="col-1">
+        <a href="/logOut"><i class="logout fas fa-sign-out-alt"></i></a>
+      </div>
+    </div>
+</nav>

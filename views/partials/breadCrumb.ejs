@@ -1,0 +1,17 @@
+<div class="container-fluid container-md">
+    <nav class="userPath shadow" aria-label="breadcrumb">
+        <ol class="breadcrumb mx-2 mb-0 fs-4">
+            <% for(let i = 0; i < breadCrumb.length; i++){ %>
+                <% if(i === (breadCrumb.length - 1) && i > 1){ %>  
+                    <li class="breadcrumb-item active" aria-current="page"><%= breadCrumb[i]%></li>
+                <%} else if(i === 0){ %>
+                    <li class="breadcrumb-item"><i class="fas fa-database"></i></li>
+                <%} else if(i === 1){ %>
+                    <li class="breadcrumb-item"><a href="<%= references[i] %> ">My cloud</a></li>
+                <% } else { %>
+                    <li class="breadcrumb-item"><a href="<%= references[i] %> "><%= breadCrumb[i]%></a></li>
+                <% } %>  
+            <% } %>
+        </ol>
+    </nav>
+</div>
