@@ -5,8 +5,11 @@
             <% data.forEach(file => { %>
             
                 <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 d-flex justify-content-center">
-                    <div class="card text-center shadow-sm p-2 my-1 w-100" style="max-width: 15rem;">
-                
+                    <% if(extensions[i] === "desktop"){ %>
+                        <div class="card text-center shadow-sm p-2 my-1 w-100" id="videoPlayer" style="max-width: 15rem;">
+                    <%} else {%> 
+                        <div class="card text-center shadow-sm p-2 my-1 w-100" style="max-width: 15rem;">
+                    <% } %> 
                         <% if (extensions[i] === "folder"){ %> 
                             
                             <!-- Folder Options Box -->
@@ -32,6 +35,40 @@
                             <a href="<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
                             <div class="card-body p-1">
                                 <p class="card-text"><%= file %></p>
+                            </div>
+
+                            <div class="collapse container p-0 mt-1" id="collapseRename<%= i %>">
+                                <form class="input-group mb-2 w-100" action="/heyCLOUD/renameFolder/<%= file %><%= url %>" method="post">
+                                    <input class="btn btn-outline-success shadow-sm w-50 fontRename" type="submit" name="submit" value="Rename">
+                                    <input type="text" name="name" class="form-control shadow-sm w-25 fontRename" placeholder="New name">
+                                </form>
+                            </div>
+                        
+                        <% } else if (extensions[i] === "desktop"){ %> 
+                            
+                            <!-- Folder Options Box -->
+                            <div class="d-flex">
+                                <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
+                                    
+                                    <!-- Delete Folder -->
+                                    <a href="/heyCLOUD/delete/folder<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger m-2"></a>
+                                    <!-- Rename Folder -->
+                                    <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRename<%= i %>" aria-expanded="false" aria-controls="collapseRename<%= i %>">
+                                    <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Folder Options Button  -->
+                                <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+                                <i class="fas fa-ellipsis-v"></i>
+                                </button>
+
+                            </div>
+                            
+                            <!-- Folder Icon -->
+                            <a href="/cinema<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
+                            <div class="card-body p-1">
+                                <p class="card-text"><%= file.split(".").slice(0,1) %></p>
                             </div>
 
                             <div class="collapse container p-0 mt-1" id="collapseRename<%= i %>">

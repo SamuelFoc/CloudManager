@@ -112,16 +112,28 @@ const view_file = (req, res) => {
 const create_folder = (req, res) => {
     const url = req.params.url; 
     const fileName = req.body.name;
-    const dir = "./" + url + "/" +fileName;
+    const videoFolderBool = req.body.videoFolder;
+    var dir = "./" + url + "/" +fileName;
 
-    if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir);
-        req.session.messageObj = {
-            message: `Folder ${fileName} at ${url} created successfully.`,
-            status: "info"
+    if (videoFolderBool){
+        if (!fs.existsSync(dir)){
+            dir = dir + ".VP";
+            fs.mkdirSync(dir);
+            req.session.messageObj = {
+                message: `Folder ${fileName} at ${url} created successfully.`,
+                status: "info"
+            }
+        }
+    } else {
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+            req.session.messageObj = {
+                message: `Folder ${fileName} at ${url} created successfully.`,
+                status: "info"
+            }
         }
     }
-
+    
     res.redirect("back");
 };
 
