@@ -1,4 +1,5 @@
 const mongoose      = require("mongoose");
+const MovieSchema   = require("./movie");
 const Schema        = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -13,6 +14,10 @@ const UserSchema = new Schema({
     isAdmin: {
         type: String,
         default: "false"
+    },
+    movies: {
+        type: [MovieSchema],
+        default: []
     }
 });
 

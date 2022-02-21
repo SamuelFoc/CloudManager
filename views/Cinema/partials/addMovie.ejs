@@ -1,0 +1,61 @@
+<style>
+
+.upload-group {
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.rangeBox {
+    background-color: rgba(255, 255, 255, 0.171);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+</style>
+
+<div class="container-fluid container-md">
+    <div class="row mb-1">
+        <div class="col-12 col-6-md">
+            <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addMovie" aria-controls="addMovie">
+                Upload new movie
+            </button>
+        </div>
+    </div>
+    <div class="row collapse" id="addMovie">
+        <form class="d-flex" action="/cinema/uploadMovie/<%= url %> " method="post" enctype="multipart/form-data">
+            <div class="col-12 col-md-6 p-2 upload-group bg-primary">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Movie name: </span>
+                    <input type="text" class="form-control" name="movieName" placeholder="MOVIE NAME" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Reveal year: </span>
+                    <input type="number" name="revealYear" class="form-control" placeholder="REVEAL YEAR" aria-describedby="basic-addon1">
+                </div>
+                <select class="form-select mb-3" name="genre">
+                    <option selected>Movie genre</option>
+                    <option value="Comedy">Comedy</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Sci-fi">Sci-fi</option>
+                    <option value="Parody">Parody</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Horror">Music clip</option>
+                    <option value="Horror">Document</option>
+                </select>
+                <div class="rangeBox mb-3">
+                    <label for="customRange2" class="form-label">My rating</label>
+                    <input type="range" class="form-range shadow" name="rating" min="0" max="5" id="customRange2">
+                </div>
+                <div>
+                    <input type="file" name="file" class="form-control mt-3" id="customFile" />
+                </div>
+            </div>
+            <div class="col-12 col-md-6 my-4 d-flex justify-content-center">
+                <div class="row d-flex align-items-center" style="height: 100%;">
+                    <button type="submit" class="btn-lg btn-primary mb-3">UPLOAD MOVIE <i class="fas fa-upload"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

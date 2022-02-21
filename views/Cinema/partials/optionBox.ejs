@@ -1,0 +1,23 @@
+<div class="d-flex options" style="max-width: 12rem;">
+    <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
+        
+        <!-- Delete Folder -->
+        <a href="/cinema/delete/<%= url %>/<%= movie %> " class="fas fa-trash text-end text-danger m-2"></a>
+        <!-- Rename Folder -->
+        <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRename<%= i %>" aria-expanded="false" aria-controls="collapseRename<%= i %>">
+        <i class="fas fa-cog"></i>
+        </button>
+    </div>
+
+    <!-- Folder Options Button  -->
+    <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+    <i class="fas fa-ellipsis-v"></i>
+    </button>
+
+</div>
+<div class="collapse container p-0 mt-1" id="collapseRename<%= i %>">
+    <form class="input-group mb-2 w-100" action="/cinema/renameMovie/<%= movie %><%= url %>" method="post">
+        <input class="btn btn-outline-success shadow-sm w-50 fontRename" type="submit" name="submit" value="Rename">
+        <input type="text" name="name" class="form-control shadow-sm w-25 fontRename" placeholder="New name">
+    </form>
+</div>

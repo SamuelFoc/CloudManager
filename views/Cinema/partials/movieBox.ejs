@@ -1,0 +1,80 @@
+<style>
+.cardImage {
+    background-color: #8aa4d400;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.555);
+    transition: .5s;
+}
+.cardImage .fa-play {
+    transition: .5s;
+}
+/* .cardImage:hover {
+    background-color: rgba(255, 255, 255, 0.13);
+} */
+
+.fa-play:hover {
+    color: rgb(18, 133, 18);
+    cursor: pointer;
+}
+
+</style>
+
+
+<div class="container-fluid container-md mt-5">
+    <div class="row">
+        <% let i = 0; %> 
+        <% movies.forEach((movie) => { %> 
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 cardImage m-2">
+                <h6 class="text-center text-light my-4"><%= info[i].movieName %> </h6> 
+                <div class="row">
+                    <a class="text-center" href="/videoTest/<%= url %>/<%= movie %>">
+                        <i class="fas fa-play text-center display-1"></i>
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-warning text-center my-2">
+                        <% for(let j = 0; j < info[i].rating; j++){ %>
+                            <i class="fas fa-star"></i>
+                        <% } %> 
+                    </div>
+                </div>
+                <div class="row d-flex">
+                    <div class="col-4 text-start">
+                        <strong class="text-muted"><%= info[i].genre %></strong>
+                    </div>
+                    <div class="col-4 text-center">
+                        <button class="ms-auto p-2 border-0 text-muted" style="background-color: rgba(0, 128, 0, 0);" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1<%= i %>" aria-expanded="false" aria-controls="collapseExample1<%= i %>">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="col-4 text-end">
+                        <p class="text-muted"><%= info[i].revealYear %></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Folder Options Box -->
+                    <div class="d-flex">
+                        <div class="collapse container mx-1 w-100" id="collapseExample1<%= i %>">
+                            <div class="d-flex justify-content-between">
+                                <!-- Delete Folder -->
+                                <a href="/cinema/deleteMovie/<%= info[i].movieName %>/<%= movie %>/<%= url %>" class="fas fa-trash text-end text-danger m-2"></a>
+                                <!-- Rename Folder -->
+                                <button class="ms-auto p-2 border-0 text-white" style="background-color: rgba(255, 255, 255, 0);" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRename<%= i %>" aria-expanded="false" aria-controls="collapseRename<%= i %>">
+                                <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="collapse container p-0 mt-1" id="collapseRename<%= i %>">
+                            <form class="input-group mb-2 w-100" action="/cinema/renameMovie/<%= info[i].movieName %>/<%= url %> " method="post">
+                                <input class="btn btn-outline-success shadow-sm w-50 fontRename" type="submit" name="submit" value="Rename">
+                                <input type="text" name="name" class="form-control shadow-sm w-25 fontRename" placeholder="New name">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% i++; %> 
+        <% }) %> 
+    </div>
+</div>
