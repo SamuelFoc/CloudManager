@@ -1,6 +1,7 @@
 const fs            = require("fs");
 const filer         = require("../services/fileServices");
 const User          = require("../models/user");
+const { Console } = require("console");
 
 
 const open_cinema = (req, res) => {
@@ -114,30 +115,25 @@ const rename_movie = (req, res) => {
     res.redirect("back");
 }
 
-const play_movie = (req, res) => {
-    const id = req.params.url.split("/")[0];
-    const file = req.params.url.split("/")[1];
-    const movieName = req.params.movieName;
-
-    const path = `../CLOUD/${id}/${file}/${movieName}`;
-
+const open_videoPlayer = (req, res) => {
+    console.log(req.params.path)
     res.render("Cinema/screen", {
-        videoPath: `/cinema/video/${path}`
+        path: req.params.path
     });
 }
 
-const player_stream = (req, res) => {
-        // Ensure there is a range given for the video
+const play_video = (req, res) => {
+  // Ensure there is a range given for the video
   const range = req.headers.range;
   if (!range) {
     res.status(400).send("Requires Range header");
   }
 
-  const pathVideo = req.params.path;
+  const path = `./CLOUD/${req.params.path}`
 
   // get video stats (about 61MB)
-  const videoPath = pathVideo;
-  const videoSize = fs.statSync(pathVideo).size;
+  const videoPath = path;
+  const videoSize = fs.statSync(path).size;
 
   // Parse Range
   // Example: "bytes=32324-"
@@ -166,9 +162,9 @@ const player_stream = (req, res) => {
 
 module.exports = {
     open_cinema,
-    play_movie,
+    play_video,
     upload_movie,
     delete_movie,
     rename_movie,
-    player_stream
+    open_videoPlayer
 }
