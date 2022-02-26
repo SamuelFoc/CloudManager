@@ -4,12 +4,13 @@
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.555);
     transition: .5s;
 }
+.cardImage:hover {
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
 .cardImage .fa-play {
     transition: .5s;
 }
-/* .cardImage:hover {
-    background-color: rgba(255, 255, 255, 0.13);
-} */
 
 .fa-play:hover {
     color: rgb(18, 133, 18);
@@ -20,13 +21,13 @@
 
 
 <div class="container-fluid container-md mt-5">
-    <div class="row">
+    <div class="row d-flex justify-content-center">
         <% let i = 0; %> 
         <% movies.forEach((movie) => { %> 
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3 cardImage m-2">
                 <h6 class="text-center text-light my-4"><%= info[i].movieName %> </h6> 
                 <div class="row">
-                    <a class="text-center" href="/cinema/videoOpen/<%= url %>/<%= movie %>">
+                    <a class="text-center" href="/cinema/videoOpen/<%= info[i].movieName %>/<%= url %>/<%= movie %>">
                         <i class="fas fa-play text-center display-1"></i>
                     </a>
                 </div>

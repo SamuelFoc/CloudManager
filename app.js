@@ -45,7 +45,7 @@ app.use(
         saveUninitialized: true,
         store: MongoStore.create({ mongoUrl: "mongodb://localhost:27017/cloudAuth" }),
         cookie: {
-            maxAge: 3600*24
+            maxAge: 3600*2*1000
         }
     })
 );

@@ -14,6 +14,8 @@ const open_cinema = (req, res) => {
     }
     )
     .then((result) => {
+        result.movies.sort();
+        console.log(result);
         res.render("Cinema/cinema", {
             movies: content,
             id: id,
@@ -116,10 +118,33 @@ const rename_movie = (req, res) => {
 }
 
 const open_videoPlayer = (req, res) => {
-    console.log(req.params.path)
-    res.render("Cinema/screen", {
-        path: req.params.path
-    });
+    const videoDbName = req.params.dbName;
+    const id = req.params.path.split("/")[0];
+    console.log(videoDbName);
+
+    User.findOne(
+        {
+            _id: id,
+            "movies.movieName": `${videoDbName}`
+        },
+        {
+            "movies.$": 1
+        } 
+        )
+        .then((result) => {
+            const movie = result.movies[0];
+            console.log(movie)
+            res.render("Cinema/screen", {
+                path: req.params.path,
+                name: movie.movieName,
+                genre: movie.genre,
+                createdAt: movie.revealYear,
+                rating: movie.rating
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 const play_video = (req, res) => {

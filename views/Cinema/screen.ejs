@@ -1,22 +1,145 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <title>Admin</title>
+    <style>
 
-.screen {
-    max-width: 100vw;
-    height: 100vh;
+        body {
+            width: 100vw;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            background-color: black;
+        }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .shadowSide{
+            background: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,7,120,1) 100%);
+        }
 
-</style>
+        .blockBack {
+            background-color: rgba(255, 255, 255, 0.041);
+        }
+        .stars {
+            color: rgb(246, 248, 113);
+        }
+        .infoText {
+            color: grey;
+        }
 
-<div class="container-fluid screen p-0">
-    <div class="row w-100">
-        <div class="col-12 d-flex justify-content-center">
-            <video controls="" autoplay="" name="media">
-                <source src="/cinema/video/<%= path %> " type="video/mp4">
-            </video>
+        /* video {
+            box-shadow: 0 0 100px blue;
+            animation-name: shadow;
+            animation-duration: 20s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes shadow {
+            0% { box-shadow: 0 0 10px blue; }
+            10% { box-shadow: 0 0 20px blue; }
+            20% { box-shadow: 0 0 50px blue; }
+            30% { box-shadow: 0 0 100px blue; }
+            40% { box-shadow: 0 0 150px blue; }
+            50% { box-shadow: 0 0 200px blue; }
+            60% { box-shadow: 0 0 150px blue; }
+            70% { box-shadow: 0 0 100px blue; }
+            80% { box-shadow: 0 0 50px blue; }
+            90% { box-shadow: 0 0 20px blue; }
+            100% { box-shadow: 0 0 10px blue; }
+        } */
+
+    </style>
+</head>
+
+<html>
+    <body>
+        <div class="container-fluid d-flex align-items-center shadowSide" style="min-height: 100vh;">
+            <div class="row d-flex justify-content-center" style="width: 100vw;">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5 border border-dark rounded blockBack">
+                    <div class="row d-flex justify-content-center">
+                        <video class="col-12" controls="" autoplay="" name="media">
+                            <source src="/cinema/video/<%= path %> " type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-11">
+                            <div class="row py-2">
+                                <div class="col-6 text-start">
+                                    <h4 class="fw-bold fs-3 text-light"><%= name %></h4>
+                                </div>
+                                <div class="col-6 text-end stars">
+                                    <% for(let i = 0; i < rating; i++){ %>
+                                        <i class="fas fa-star p-1"></i>
+                                    <% } %> 
+                                </div>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col-6 infoText">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5>Genre: </h5>
+                                        </div>
+                                        <div class="col-6">
+                                            <h5><%= genre %></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5>Created at: </h5>
+                                        </div>
+                                        <div class="col-6">
+                                            <h5><%= createdAt %></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    
+    </html>
+
+
+
+<!-- <div class="container-fluid">
+                <div class="row p-2">
+                    <div class="col-6 text-start">
+                        <h4 class="fw-bold fs-3 text-light">Name</h4>
+                    </div>
+                    <div class="col-6 text-end px-5 text-primary">
+                        <i class="fas fa-star p-1"></i>
+                        <i class="fas fa-star p-1"></i>
+                        <i class="fas fa-star p-1"></i>
+                        <i class="fas fa-star p-1"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="row">
+                            <div class="col-6">
+                                <h5>Genre: </h5>
+                            </div>
+                            <div class="col-6">
+                                <h5>Comedy</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5>Created at: </h5>
+                            </div>
+                            <div class="col-6">
+                                <h5>1999</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
