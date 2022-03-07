@@ -1,7 +1,7 @@
 <div class="container-fluid container-md">
     <div class="row">
         <div id="dragArea" class="col-12 d-flex justify-content-center">
-            <form class="m-3 mx-5 d-flex flex-column" method="post" action="/heyCLOUD/upload<%= url %> " enctype="multipart/form-data">
+            <form class="m-3 mx-5 d-flex flex-column" method="post" action="/heyCLOUD/upload/<%= url %> " enctype="multipart/form-data">
                 <div class="dragContainer">
                     <input class="form-control dragDrop" type="file" name="files" id="formFile" multiple>
                     <input class="btn btn-primary p-1 m-2 w-50" type="submit" value="Upload">

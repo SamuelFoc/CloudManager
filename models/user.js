@@ -1,5 +1,5 @@
 const mongoose      = require("mongoose");
-const MovieSchema   = require("./movie");
+const MovieFolderSchema   = require("./movieFolder");
 const Schema        = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -12,11 +12,11 @@ const UserSchema = new Schema({
         required: true
     },
     isAdmin: {
-        type: String,
-        default: "false"
+        type: Boolean,
+        default: false
     },
-    movies: {
-        type: [MovieSchema],
+    moviesFolders: {
+        type: [ MovieFolderSchema ],
         default: []
     }
 });
@@ -24,3 +24,4 @@ const UserSchema = new Schema({
 const User = mongoose.model("User", UserSchema);
 
 module.exports = User
+

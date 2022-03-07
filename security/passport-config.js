@@ -10,7 +10,6 @@ function verifyCallback(username, password, done){
 
         bcrypt.compare(password, user.password, (err, res) => {
             if (err) return done (err);
-
             if (res === false){return done(null, false, console.log("Incorrect password."))}
             
             return done(null, user);

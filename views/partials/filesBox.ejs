@@ -17,7 +17,7 @@
                                 <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
                                     
                                     <!-- Delete Folder -->
-                                    <a href="/heyCLOUD/delete/folder<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger m-2"></a>
+                                    <a href="/heyCLOUD/delete/folder/<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger m-2"></a>
                                     <!-- Rename Folder -->
                                     <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRename<%= i %>" aria-expanded="false" aria-controls="collapseRename<%= i %>">
                                     <i class="fas fa-cog"></i>
@@ -32,13 +32,13 @@
                             </div>
                             
                             <!-- Folder Icon -->
-                            <a href="<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
+                            <a href="/CLOUD/<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
                             <div class="card-body p-1">
                                 <p class="card-text"><%= file %></p>
                             </div>
 
                             <div class="collapse container p-0 mt-1" id="collapseRename<%= i %>">
-                                <form class="input-group mb-2 w-100" action="/heyCLOUD/renameFolder/<%= file %><%= url %>" method="post">
+                                <form class="input-group mb-2 w-100" action="/heyCLOUD/renameFolder/<%= file %>/<%= url %>" method="post">
                                     <input class="btn btn-outline-success shadow-sm w-50 fontRename" type="submit" name="submit" value="Rename">
                                     <input type="text" name="name" class="form-control shadow-sm w-25 fontRename" placeholder="New name">
                                 </form>
@@ -51,7 +51,7 @@
                                 <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
                                     
                                     <!-- Delete Folder -->
-                                    <a href="/heyCLOUD/delete/folder<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger m-2"></a>
+                                    <a href="/heyCLOUD/delete/videoFolder/<%= url %>/<%= file %> " class="fas fa-trash text-end text-danger m-2"></a>
                                     <!-- Rename Folder -->
                                     <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRename<%= i %>" aria-expanded="false" aria-controls="collapseRename<%= i %>">
                                     <i class="fas fa-cog"></i>
@@ -66,15 +66,16 @@
                             </div>
                             
                             <!-- Folder Icon -->
-                            <a href="/cinema<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
+                            <a href="/cinema/<%= url %>/<%= file %>  " class="fas fa-<%= extensions[i] %>  display-2" style="max-width: 15rem;"></a>
                             <div class="card-body p-1">
                                 <p class="card-text"><%= file.split(".").slice(0,1) %></p>
                             </div>
 
                             <div class="collapse container p-0 mt-1" id="collapseRename<%= i %>">
-                                <form class="input-group mb-2 w-100" action="/heyCLOUD/renameFolder/<%= file %><%= url %>" method="post">
+                                <form class="input-group mb-2 w-100" action="/heyCLOUD/renameFolder/<%= file %>/<%= url %>" method="post">
                                     <input class="btn btn-outline-success shadow-sm w-50 fontRename" type="submit" name="submit" value="Rename">
                                     <input type="text" name="name" class="form-control shadow-sm w-25 fontRename" placeholder="New name">
+                                    <input type="checkbox" name="videoFolder" id="videoCHCK" value="true" style="display: none;">
                                 </form>
                             </div>
                         
@@ -84,7 +85,7 @@
 
                             <div class="collapse container mx-3 w-100 text-end" id="collapseExample1<%= i %>">
                                 <!-- Delete File -->
-                                <a href="/heyCLOUD/delete/file<%= url %>/<%= file %> " class="fas fa-trash text-danger m-2"></a>
+                                <a href="/heyCLOUD/delete/file/<%= url %>/<%= file %> " class="fas fa-trash text-danger m-2"></a>
                                 <!-- Rename File -->
                                 <button class="ms-auto p-2 border-0" style="max-width: 2rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRenameFile<%= i %>" aria-expanded="false" aria-controls="collapseRenameFile<%= i %>">
                                     <i class="fas fa-cog"></i>
@@ -97,14 +98,14 @@
 
                             </div>
                             
-                            <a href="/heyCLOUD/view/<%= file %><%= url %> " class="fas fa-<%= extensions[i] %>  display-3"></a>
+                            <a href="/heyCLOUD/view/<%= file %>/<%= url %> " class="fas fa-<%= extensions[i] %>  display-3"></a>
                             <div class="card-body p-1">
                                 <p class="card-text"><%= file %></p>
                             </div>
-                            <a class="fas fa-download" href="/heyCLOUD/download/<%= file %><%= url %> "></a>
+                            <a class="fas fa-download" href="/heyCLOUD/download/<%= file %>/<%= url %> "></a>
                             
                             <div class="collapse container p-0 mt-1" id="collapseRenameFile<%= i %>">
-                                <form class="input-group mb-2" action="/heyCLOUD/renameFile/<%= file %><%= url %>" method="post">
+                                <form class="input-group mb-2" action="/heyCLOUD/renameFile/<%= file %>/<%= url %>" method="post">
                                     <input class="btn btn-outline-success shadow-sm fontRename" type="submit" name="submit" value="Rename">
                                     <input type="text" name="name" class="form-control shadow-sm fontRename" placeholder="New name">
                                 </form>

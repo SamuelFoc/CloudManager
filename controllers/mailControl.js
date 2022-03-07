@@ -10,8 +10,8 @@ const sendPermissionMail = (req, res) => {
         port: 465,
         secure: true,
         auth: {
-            user: "sipikal.portfolio@gmail.com",
-            pass: "SamuelPortfolioXbT23#"
+          user: process.env.EMAIL_NAME,
+          pass: process.env.EMAIL_PASS
         },
         tls:{
             rejectUnauthorized: false
@@ -20,7 +20,7 @@ const sendPermissionMail = (req, res) => {
       
       var mailOptions = {
         from: req.body.email,
-        to: 'sipikal.portfolio@gmail.com',
+        to: process.env.EMAIL_NAME,
         subject: 'CLOUD permission request',
         text: 'Mail sended',
         html: output
@@ -49,8 +49,8 @@ const givePermissionMail = (credentials) => {
       port: 465,
       secure: true,
       auth: {
-          user: "sipikal.portfolio@gmail.com",
-          pass: "SamuelPortfolioXbT23#"
+        user: process.env.EMAIL_NAME,
+        pass: process.env.EMAIL_PASS
       },
       tls:{
           rejectUnauthorized: false
@@ -58,7 +58,7 @@ const givePermissionMail = (credentials) => {
     });
     
     var mailOptions = {
-      from: 'sipikal.portfolio@gmail.com',
+      from: process.env.EMAIL_NAME,
       to: `${sendTo}`,
       subject: 'CLOUD access allowed',
       text: 'Mail contents your credentials',
@@ -85,8 +85,8 @@ const sendWarnMail = (sendTo, message) => {
       port: 465,
       secure: true,
       auth: {
-          user: "sipikal.portfolio@gmail.com",
-          pass: "SamuelPortfolioXbT23#"
+          user: process.env.EMAIL_NAME,
+          pass: process.env.EMAIL_PASS
       },
       tls:{
           rejectUnauthorized: false
@@ -94,7 +94,7 @@ const sendWarnMail = (sendTo, message) => {
     });
     
     var mailOptions = {
-      from: 'sipikal.portfolio@gmail.com',
+      from: process.env.EMAIL_NAME,
       to: `${sendTo}`,
       subject: 'CLOUD warning',
       text: '',

@@ -1,24 +1,29 @@
 const filer         = require("../services/fileServices");
 const fs            = require("fs");
-const { concat }    = require("rxjs/operators");
 const User = require("../models/user");
+require("dotenv").config();
 
 const open_folder = (req, res) => {
+    const id = req.session.passport.user;
     const folderName = req.params.folder;
-    const content = fs.readdirSync(`./CLOUD/${folderName}`);
-    extensions = filer.readExtensions(content);
+    const content = fs.readdirSync(`${process.env.BASE_DIRECTORY}/${folderName}`);
+    var extensions = filer.readExtensions(content);
 
     const breadCrumb = req.originalUrl.split("/").slice(1);
-    var references = [];
-    console.log(breadCrumb, breadCrumb[0])
-    
+
+    var references = [];    
     for (let i = 0; i < breadCrumb.length; i++){
         if(i < 1){
-            references.push("/".concat(breadCrumb[i]));
+            references.push("/".concat(breadCrumb[i].toString()));
         } else {
-            references.push(references[i-1].concat("/", breadCrumb[i]));
+            references.push(references[i-1].concat("/", breadCrumb[i].toString()));
         }
     }
+
+    var isAdmin;
+    User.find({_id: req.session.passport.user}, (err, user) => {
+        isAdmin = user[0].isAdmin;
+    });
 
     res.render("index", 
         {
@@ -26,17 +31,21 @@ const open_folder = (req, res) => {
             data: content, 
             status: req.session.messageObj.status,
             extensions: extensions,
-            url: req.originalUrl,
+            url: req.params.folder,
             breadCrumb: breadCrumb,
-            references: references
-        })
-    
+            references: references,
+            id: id,
+            isAdmin: isAdmin
+        }
+    )
+    req.session.messageObj = {message: "", status: "secondary"};
+    req.session.save();
 }
 
 const open_CLOUD = (req, res) => {
-    data = fs.readdirSync(`./CLOUD/${req.session.passport.user}`);
-    extensions = filer.readExtensions(data);
-    
+    const id = req.session.passport.user;
+    const data = fs.readdirSync(`${process.env.BASE_DIRECTORY}/${id}`);
+    const extensions = filer.readExtensions(data);
     var breadCrumb = req.originalUrl.split("/").slice(1);
     var references = [];
     
@@ -54,30 +63,27 @@ const open_CLOUD = (req, res) => {
             status: "primary"
         }
     }
-
-    if(req.session.views > 1){
-        var message = new Date();
-        var message = `Today is ${message.toDateString()}, hope you have a nice day`;
-    } else {
-        message = "Welcome to your cloud storage";
-    }
-
-    const newUrl = req.originalUrl + "/" + req.session.passport.user;
+    var message = req.session.messageObj.message;
+    var status = req.session.messageObj.status;
     
     User.find({_id: req.session.passport.user}, (err, user) => {
         isAdmin = user[0].isAdmin;
         res.render("index", 
         {
-            message: message, 
+            message: message,
             data: data, 
-            status: "primary",
+            status: status,
             extensions: extensions,
-            url: newUrl,
+            id: id,
+            url: id,
             breadCrumb: breadCrumb,
             references: references,
             isAdmin: isAdmin
         })
     })
+
+    req.session.messageObj = {message: "", status: "secondary"};
+    req.session.save();
 }
 
 

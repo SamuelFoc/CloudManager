@@ -7,7 +7,6 @@ const path              = require("path");
 const MongoStore        = require("connect-mongo");
 const auth              = require("./security/secure-functions");
 const sign              = require("./controllers/signIn");
-const fs                = require("fs");
 
 //ROUTES REQUIRES
 const baseRoutes        = require("./routes/baseCloudRoutes");
@@ -56,13 +55,21 @@ app.use(passport.session());
 //FileUpload
 app.use(upload());
 
+const cors = require('cors');
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
+
 //FirstMeetRoutes
 app.get("/signUp", (req, res) => {
     res.render("signUp", {message: ""});
 });
 
 app.post("/signUp", passport.authenticate("local", {failureRedirect: "back"}), (req, res) => {
-    res.redirect(`/CLOUD`);
+    res.redirect(`/`);
 });
 
 app.get("/logOut", (req, res) => {
@@ -77,6 +84,7 @@ app.post("/firstSignIn", (req, res) => {
     sign.first_sign_in(req, res);
 })
 app.use(auth.isThereAdmin);
+app.use(auth.isAdmin);
 
 //AskForPermission
 app.use("/ask", permissionRoutes);
@@ -84,12 +92,10 @@ app.use("/ask", permissionRoutes);
 //Routes
 app.use(auth.isLoggedIn);
 
-app.get("/", (req, res) => res.redirect("/CLOUD"));
+//Admin
+app.use("/admin", adminRoutes);
 app.get("/upload(*)", (req, res) => res.redirect("/"));
-app.use("/CLOUD", baseRoutes);
 app.use("/heyCLOUD", cloudOperations);
 app.use("/cinema", cinemaRoutes);
-
-//Admin
-app.use(auth.isAdmin);
-app.use("/admin", adminRoutes);
+app.use("/CLOUD", baseRoutes);
+app.get("/", (req, res) => res.redirect("/CLOUD"));

@@ -129,7 +129,7 @@ const fullfillMail = (req, res) => {
             <hr>
             <div class="row">
                 <h4>Admin answer</h4>
-                <form class="form-control align-items-center" action="http://localhost:3000/ask/givePermission" method="post">
+                <form class="form-control align-items-center" action="http://aha-cloud.com/ask/givePermission" method="post">
                     <input type="email" name="email" class="form-control w-100" value="${req.body.email}">
                     <button class="btn" type="submit" name="access" value="true">Give access</button>
                     <button class="btn-danger" type="submit" name="access" value="false">Deny access</button>
@@ -255,7 +255,7 @@ const givePermMail = (email, password) => {
                 </div>
             <hr>
             <div style="width: 100vw; display: flex; align-items: center; margin-top: 10px;">
-                <a class="btn" href="http://localhost:3000/signUp">Sign up</a>  
+                <a class="btn" href="http://aha-cloud.com/signUp">Sign up</a>  
             </div>
         </div>
     </body>

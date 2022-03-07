@@ -12,13 +12,13 @@ const send_permission_mail = (req, res) => {
 }
 
 const give_permission = (req, res) => {
-    console.log(req.body)
     if (req.body.access === "true"){
-        console.log("true")
         const credentials = PS.sign_in_randomly(req, res);
-        mailer.givePermissionMail(credentials);
+        if (credentials){
+            mailer.givePermissionMail(credentials);
+        }        
     } else {
-        mailer.sendWarnMail(req.body.email, "We apologize, but you have been denied access to the Home Assist cloud.");
+        mailer.sendWarnMail(req.body.email, "We apologize, but you have been denied access to the Home Assist cloud by Admin");
     }
     res.redirect("back");
 }

@@ -1,39 +1,24 @@
 const fs            = require("fs");
 const filer         = require("../services/fileServices");
 const User          = require("../models/user");
-const { Console } = require("console");
-
+const cinema        = require("../services/cinemaServices");
 
 const open_cinema = (req, res) => {
-    const id = req.params.url.split("/").slice(0,1);
-    const content = fs.readdirSync(`./CLOUD/${req.params.url}`);
-
-    User.findOne(
-    {
-        _id: id
-    }
-    )
-    .then((result) => {
-        result.movies.sort();
-        console.log(result);
-        res.render("Cinema/cinema", {
-            movies: content,
-            id: id,
-            url: req.params.url,
-            info: result.movies
-        });
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    const url = req.params.url;
+    
+    cinema.updateAndOpenMovieFolder(url,res,req);
 }
+
 
 const upload_movie = (req, res) => {
     const movieName = req.body.movieName;
-    const id = req.params.url.split("/").slice(0,1);
+    const url = req.params.url;
+    const id = url.split("/").slice(0,1);
+    const parentFolder = url.split("/").pop();
     const file = req.files.file;
+    const extension = file.name.split(".").pop();
 
-    let data = fs.readdirSync(`./CLOUD/${req.params.url}`);
+    let data = fs.readdirSync(`${process.env.BASE_DIRECTORY}/${req.params.url}`);
     let match = data.filter((file) => {
         return file === movieName
     });
@@ -42,11 +27,25 @@ const upload_movie = (req, res) => {
         console.log("matched")
         res.redirect(`back`)
     } else {
-        filer.uploadFileToDirectory(file, "./CLOUD/"+`${req.params.url}` + "/");
-        console.log("File: " + `${movieName}` + " was saved to: " + "./CLOUD/"+`${req.params.url}` + "/");
+        filer.uploadFileToDirectory(file, `${process.env.BASE_DIRECTORY}/${req.params.url}/`);
+        console.log(`"File: ${movieName} was saved to: ${process.env.BASE_DIRECTORY}/${req.params.url}/`);
+
+        const currPath = `${process.env.BASE_DIRECTORY}/${req.params.url}/${file.name}`;
+        const newPath = `${process.env.BASE_DIRECTORY}/${req.params.url}/${movieName}.${extension}`;
+
+        fs.rename(currPath, newPath, function(err) {
+            if (err) {
+            console.log(err)
+            } else {
+            console.log("Video successfully added to database.")
+            }
+        })
 
         User.findOneAndUpdate(
-            { _id: id }, 
+            { 
+                _id: id,
+                "movies.parentFolder": parentFolder
+             }, 
             { $push: { movies: req.body }}
             )
             .then(
@@ -61,11 +60,12 @@ const upload_movie = (req, res) => {
 }
 
 const delete_movie = (req, res) => {
-    const id = req.params.url.split("/")[0];
-    const folderName = req.params.url.split("/")[1];
+    const url = req.params.url;
+    const id = url.split("/")[0];
+    const folderName = url.split("/").pop();
     const dbName = req.params.dbName;
     const fileName = req.params.movieName;
-    const dir = `./CLOUD/${id}/${folderName}/${fileName}`;
+    const dir = `${process.env.BASE_DIRECTORY}/${url}/${fileName}`;
     
     if (fs.existsSync(dir)){
         fs.unlinkSync(dir);
@@ -75,6 +75,7 @@ const delete_movie = (req, res) => {
     User.findOneAndUpdate(
         {
             _id: id,
+            "moviesFolders.parentFolder": parentFolder,
             "movies.movieName": `${dbName}`
         },
         {
@@ -133,7 +134,6 @@ const open_videoPlayer = (req, res) => {
         )
         .then((result) => {
             const movie = result.movies[0];
-            console.log(movie)
             res.render("Cinema/screen", {
                 path: req.params.path,
                 name: movie.movieName,
@@ -154,7 +154,7 @@ const play_video = (req, res) => {
     res.status(400).send("Requires Range header");
   }
 
-  const path = `./CLOUD/${req.params.path}`
+  const path = `${process.env.BASE_DIRECTORY}/${req.params.path}`
 
   // get video stats (about 61MB)
   const videoPath = path;
@@ -172,7 +172,7 @@ const play_video = (req, res) => {
     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
     "Accept-Ranges": "bytes",
     "Content-Length": contentLength,
-    "Content-Type": "video/mp4",
+    "Content-Type": "video/avi",
   };
 
   // HTTP Status 206 for Partial Content

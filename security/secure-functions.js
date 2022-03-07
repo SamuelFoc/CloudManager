@@ -1,7 +1,7 @@
 const User          = require("../models/user");
 
 function isThereAdmin(req, res, next){
-    User.findOne({ email: "samo.sipikal@gmail.com"}, (err, exists) => {
+    User.findOne({ isAdmin: "true"}, (err, exists) => {
         if(exists){
             if(req.session.viewCount < 2){
                 console.log("There already is Admin!")
@@ -19,7 +19,6 @@ function isLoggedIn(req, res, next){
         if (req.session.viewCount){
             req.session.viewCount++;
         } else {req.session.viewCount = 1}
-        console.log(`${req.session.viewCount} authenticated access in last 24h...`)
         return next()
     } else {
         console.log("Access denied...")
@@ -38,15 +37,19 @@ function isLoggedOut(req, res, next){
 }
 
 function isAdmin(req, res, next){
-    User.find({_id: req.session.passport.user}, (err, result) => {
-        if (result[0].isAdmin){
-            console.log("Admin authenticated")
-            next()
-        } else {
-            console.log("An attempt at unauthorized access")
-            res.redirect("/CLOUD")
-        }
-    })
+    if(req.session.passport){
+        User.find({_id: req.session.passport.user}, (err, result) => {
+            if (result[0].isAdmin){
+                console.log("Admin authenticated")
+                next()
+            } else {
+                console.log("An attempt at unauthorized access")
+                res.redirect("/CLOUD")
+            }
+        })
+    } else {
+        res.render("signUp", {message: new(Date)})
+    }
     
 }
 

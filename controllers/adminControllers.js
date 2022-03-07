@@ -1,8 +1,8 @@
 const User 				= require("../models/user");
 const fs				= require("fs");
-const mongoose			= require("mongoose");
 const mailer            = require("../controllers/mailControl");
-
+const messenger         = require("../services/messenger");
+require("dotenv").config();
 
 const open_admin = (req, res) => {
     User.find({}, (err, users) => {
@@ -10,7 +10,7 @@ const open_admin = (req, res) => {
         var isAdmin = [];
         users.forEach(user => {
             id = user._id.toString();
-            dates.push(fs.statSync(`./CLOUD/${id}`));
+            dates.push(fs.statSync(`${process.env.BASE_DIRECTORY}/${id}`));
             isAdmin.push(user.isAdmin);
         });
         res.render("adminPage", {users: users,dates: dates, isAdmin: isAdmin})
@@ -19,15 +19,13 @@ const open_admin = (req, res) => {
 
 const delete_user = (req, res) => {
     const id = req.params.id;
-    const dir = "./CLOUD/" + id;
+    const dir = `${process.env.BASE_DIRECTORY}/${id}`;
 
     fs.rmdir(dir, { recursive: true }, (err) => {
         if (err) {
-            req.session.messageObj = {
-                message: `Sorry, there occured some problems deleting the file, please try it again.`,
-                status: "danger"
-            }
-            throw err;
+            req.session.messageObj = messenger.general_error;
+            req.session.save();
+            console.log(err)
         } else {
             User.findOneAndDelete({_id: id}, (err, user) => {
                 console.log(`User ${user.email} deleted`);
